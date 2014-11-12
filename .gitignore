@@ -77,7 +77,6 @@ libtool
 autom4te.cache/
 m4/
 protogen
-bin/
 goldfish/
 u-boot/
 system/

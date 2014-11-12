@@ -20,8 +20,8 @@
 #
 # The base directory.
 #
-D_GOLDFISH_OUT=${HOME}/src/build/goldfish
-D_UBOOT_OUT=${HOME}/src/build/u-boot
+D_GOLDFISH_OUT=../build/goldfish
+D_UBOOT_OUT=../build/u-boot
 D_UBOOT=../u-boot
 D_GOLDFISH=../goldfish
 D_BUSYBOX=./busybox
@@ -46,11 +46,11 @@ u-boot_build:
 	export BUILD_DIR=${D_UBOOT_OUT}; cd ${D_UBOOT}; make all arch=ARM CROSS_COMPILE=arm-none-eabi-
 
 u-boot_run:
-	emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -monitor telnet::6666,server -kernel ${D_UBOOT_OUT}/u-boot
+	@xterm -e "emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -kernel ${D_UBOOT_OUT}/u-boot"
 
 u-boot_debug:
 	ddd --debugger arm-none-eabi-gdb ${D_UBOOT_OUT}/u-boot &
-	emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -monitor telnet::6666,server -s -S -kernel ${D_UBOOT_OUT}/u-boot
+	@xterm -e "emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -s -S -kernel ${D_UBOOT_OUT}/u-boot"
 
 goldfish_config:
 	mkdir -p ${D_GOLDFISH_OUT}
