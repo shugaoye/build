@@ -96,12 +96,7 @@ flash.bin:
 	dd if=bin/rootfs.uimg of=bin/flash.bin conv=notrunc bs=1 seek=4M
 
 clean:
-	export BUILD_DIR=${D_UBOOT_OUT}; cd ${D_UBOOT}; make clean arch=ARM CROSS_COMPILE=arm-none-eabi-
-	cd ${D_GOLDFISH_OUT}; make clean arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-
-	cd ${D_BUSYBOX}; make arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi- clean
-	rm bin/rootfs.img  bin/rootfs.img.gz  bin/rootfs.uimg  bin/zImage.uimg bin/ramdisk.img bin/flash.bin bin/system.img
-	rm -rf system
-	rm -rf initrd
+	bin/clearup.sh
 
 distclean:
 	cd ${D_UBOOT}; make distclean
