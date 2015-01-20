@@ -56,6 +56,9 @@ goldfish_config:
 	mkdir -p ${D_GOLDFISH_OUT}
 	cd ${D_GOLDFISH}; make O=${D_GOLDFISH_OUT} goldfish_armv7_defconfig arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-
 
+goldfish_menuconfig:
+	@xterm -e "cd ${D_GOLDFISH}; make O=${D_GOLDFISH_OUT} menuconfig arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-"
+
 goldfish_build:
 	mkdir -p bin
 	cd ${D_GOLDFISH_OUT}; make arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-
@@ -63,10 +66,13 @@ goldfish_build:
 
 goldfish_debug:
 	ddd --debugger arm-none-eabi-gdb ${D_GOLDFISH_OUT}/vmlinux &
-	emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -monitor telnet::6666,server -s -S -kernel ${D_GOLDFISH_OUT}/arch/arm/boot/zImage
+	@xterm -e "emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -s -S -kernel ${D_GOLDFISH_OUT}/arch/arm/boot/zImage"
 
 goldfish_run:
 	emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -monitor telnet::6666,server -kernel ${D_GOLDFISH_OUT}/arch/arm/boot/zImage
+
+goldfish_distclean:
+	cd ${D_GOLDFISH}; make distclean
 
 bb_config:
 	mkdir -p busybox
