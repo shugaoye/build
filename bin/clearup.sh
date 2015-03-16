@@ -62,6 +62,7 @@ if [ -f ./bin/system.img ]; then
 	rm bin/system.img
 fi
 
+rm -rf images
 rm -rf system
 rm -rf initrd
 

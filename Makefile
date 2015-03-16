@@ -30,8 +30,8 @@ D_ROOTFS=./initrd
 F_RAMDISK=./bin/ramdisk.img
 F_SYSTEM=./bin/system.img
 
-all:u-boot_build goldfish_build bb rootfs flash.bin
-config: u-boot_config goldfish_config bb_config
+all:rootfs flash.bin
+config: u-boot_config goldfish_config
 
 run_zImage:
 	emulator -verbose -show-kernel -netfast -avd hd2 -system ${F_SYSTEM} -ramdisk ${F_RAMDISK} -qemu -serial stdio -monitor telnet::6666,server -kernel ${D_GOLDFISH_OUT}/arch/arm/boot/zImage
@@ -42,7 +42,7 @@ run:
 u-boot_config:
 	export BUILD_DIR=${D_UBOOT_OUT}; cd ${D_UBOOT}; make goldfish_config arch=ARM CROSS_COMPILE=arm-none-eabi-
 
-u-boot_build:
+u-boot_build:u-boot_config
 	export BUILD_DIR=${D_UBOOT_OUT}; cd ${D_UBOOT}; make all arch=ARM CROSS_COMPILE=arm-none-eabi-
 
 u-boot_run:
@@ -59,7 +59,7 @@ goldfish_config:
 goldfish_menuconfig:
 	@xterm -e "cd ${D_GOLDFISH}; make O=${D_GOLDFISH_OUT} menuconfig arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-"
 
-goldfish_build:
+goldfish_build:goldfish_config
 	mkdir -p bin
 	cd ${D_GOLDFISH_OUT}; make arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi-
 	mkimage -A arm -C none -O linux -T kernel -d ${D_GOLDFISH_OUT}/arch/arm/boot/zImage -a 0x00010000 -e 0x00010000 bin/zImage.uimg
@@ -82,7 +82,7 @@ bb_config:
 bb:
 	cd ${D_BUSYBOX}; make arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi- install
 
-rootfs:
+rootfs:u-boot_build goldfish_build
 #	find ${D_ROOTFS} | cpio -oc | gzip -c -9 >| bin/rootfs.img
 	./prep.sh
 	cd ${D_ROOTFS} ; cpio -o -H newc -O ../bin/ramdisk.img < ../initrd.list
@@ -90,12 +90,12 @@ rootfs:
 	cp bin/ramdisk.img bin/rootfs.img
 	gzip -c bin/rootfs.img > bin/rootfs.img.gz
 	mkimage -A arm -C none -O linux -T ramdisk -d bin/rootfs.img.gz -a 0x00800000 -e 0x00800000 bin/rootfs.uimg
-	cp ${D_BUSYBOX}/busybox system/xbin/busybox
+#	cp ${D_BUSYBOX}/busybox system/xbin/busybox
 	cp bin/rootfs.uimg system/ramdisk.uimg
 	cp bin/zImage.uimg system/zImage.uimg
 	mkyaffs2image system bin/system.img
 
-flash.bin:
+flash.bin:u-boot_build goldfish_build
 	dd if=/dev/zero of=bin/flash.bin bs=1 count=6M
 	dd if=${D_UBOOT_OUT}/u-boot.bin of=bin/flash.bin conv=notrunc bs=1
 	dd if=bin/zImage.uimg of=bin/flash.bin conv=notrunc bs=1 seek=2M
@@ -105,9 +105,8 @@ clean:
 	bin/clearup.sh
 
 distclean:
-	cd ${D_UBOOT}; make distclean
-	cd ${D_GOLDFISH}; make distclean
-	cd ${D_BUSYBOX}; make arch=ARM CROSS_COMPILE=arm-none-linux-gnueabi- distclean
+	rm -rf ${D_UBOOT_OUT}
+	rm -rf ${D_GOLDFISH_OUT}
 	rm bin/rootfs.img  bin/rootfs.img.gz  bin/rootfs.uimg  bin/zImage.uimg bin/ramdisk.img
 	rm -rf busybox
 

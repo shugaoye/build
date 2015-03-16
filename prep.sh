@@ -17,6 +17,21 @@
 
 #!/bin/sh
 
+if [ -x images ]; then
+        echo "Find images folder."
+else
+        echo "Cannot images folder."
+	if [ -z $AndroidSDK ]; then
+		AndroidSDK=AndroidSDK=$HOME/android-sdk-linux
+		echo "Not find SDK PATH. Set it to $AndroidSDK"
+	else
+		echo "Find SDK PATH."
+	fi
+	mkdir images
+	ln -s $HOME/android-sdk-linux/system-images/android-15/default/armeabi-v7a/ramdisk.img images/ramdisk.img
+	ln -s $HOME/android-sdk-linux/system-images/android-15/default/armeabi-v7a/system.img images/system.img
+fi
+
 if [ -f initrd/init.rc ]; then
     echo "found initrd/init.rc."
 else
