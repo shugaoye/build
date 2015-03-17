@@ -22,7 +22,7 @@ echo "Android SDK 24.1.2 and API 22"
 export TOOLROOT=${HOME}/arm-2013.11
 export ARCH=arm
 export SUBARCH=arm
-AndroidSDK=$HOME/android-sdk-linux
+AndroidSDK=$HOME/adt-bundle-linux-x86_64-20140702/sdk
 
 if [ -x ${AndroidSDK}/platforms/android-15 ]; then
         echo "Find API level 15."
@@ -38,6 +38,6 @@ else
 	return
 fi
 
-export PATH=${TOOLROOT}/bin:$PATH:${AndroidSDK}/platform-tools:${AndroidSDK}/tools
+export PATH=$HOME/src/build/bin:${TOOLROOT}/bin:$PATH:${AndroidSDK}/platform-tools:${AndroidSDK}/tools
 echo TOOLROOT=${HOME}/arm-2013.11
-echo Android SDK path is $HOME/android-sdk-linux.
+echo Android SDK path is $AndroidSDK.
