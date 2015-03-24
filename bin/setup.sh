@@ -22,12 +22,20 @@ echo "Android SDK 24.1.2 and API 22"
 export TOOLROOT=${HOME}/arm-2013.11
 export ARCH=arm
 export SUBARCH=arm
-AndroidSDK=$HOME/adt-bundle-linux-x86_64-20140702/sdk
+
+if [ `uname -p` = "x86_64" ]; then
+	echo "Initializing x86_64 version ..."
+	export AndroidSDK=$HOME/adt-bundle-linux-x86_64-20140702/sdk
+else
+	echo "Initializing x86 version ..."
+	export AndroidSDK=$HOME/adt-bundle-linux-x86-20140702/sdk
+fi
 
 if [ -x ${AndroidSDK}/platforms/android-15 ]; then
         echo "Find API level 15."
 else
         echo "Cannot find API level 15. Please download API level 15 in order to create the version of virtual device needed in this book."
+	echo ${AndroidSDK}/platforms/android-15
 	return
 fi
 
