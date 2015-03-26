@@ -107,6 +107,9 @@ clean:
 distclean:
 	rm -rf ${D_UBOOT_OUT}
 	rm -rf ${D_GOLDFISH_OUT}
-	rm bin/rootfs.img  bin/rootfs.img.gz  bin/rootfs.uimg  bin/zImage.uimg bin/ramdisk.img
+	rm -f bin/flash.bin bin/system.img bin/rootfs.img  bin/rootfs.img.gz  bin/rootfs.uimg  bin/zImage.uimg bin/ramdisk.img
+	rm -rf images
+	rm -rf system
+	rm -rf initrd
 	rm -rf busybox
 

@@ -22,14 +22,18 @@ if [ -x images ]; then
 else
         echo "Cannot images folder."
 	if [ -z $AndroidSDK ]; then
-		AndroidSDK=AndroidSDK=$HOME/android-sdk-linux
 		echo "Not find SDK PATH. Set it to $AndroidSDK"
+		if [ `uname -p` = "x86_64" ]; then
+			export AndroidSDK=$HOME/adt-bundle-linux-x86_64-20140702/sdk
+		else
+			export AndroidSDK=$HOME/adt-bundle-linux-x86-20140702/sdk
+		fi
 	else
 		echo "Find SDK PATH."
 	fi
 	mkdir images
-	ln -s $HOME/android-sdk-linux/system-images/android-15/default/armeabi-v7a/ramdisk.img images/ramdisk.img
-	ln -s $HOME/android-sdk-linux/system-images/android-15/default/armeabi-v7a/system.img images/system.img
+	ln -s $AndroidSDK/system-images/android-15/default/armeabi-v7a/ramdisk.img images/ramdisk.img
+	ln -s $AndroidSDK/system-images/android-15/default/armeabi-v7a/system.img images/system.img
 fi
 
 if [ -f initrd/init.rc ]; then

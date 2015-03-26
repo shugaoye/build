@@ -2,9 +2,9 @@
 <manifest>
 <remote  name="shugaoye"
             fetch="https://github.com" />
-<project path="kernel/armemu" name="shugaoye/goldfish" remote="shugaoye" revision="android-armemu-3.4" />
+<project path="kernel" name="shugaoye/goldfish" remote="shugaoye" revision="android-armemu-3.4" />
 <project path="u-boot" name="shugaoye/u-boot" remote="shugaoye" revision="android-armemu-3.4" />
-<project path="device/generic/armemu/" name="shugaoye/cm_armemu" remote="shugaoye" revision="master" />
+<project path="device/generic/armemu/" name="shugaoye/armemu" remote="shugaoye" revision="master" />
 <project path="device/htc/leo" name="shugaoye/android_device_htc_leo" remote="shugaoye" revision="gb-release-7.2" />
 <project path="vendor/htc/leo" name="shugaoye/android_vendor_htc_leo" remote="shugaoye" revision="jellybean" />
 </manifest>
