@@ -1,4 +1,4 @@
-if [-x out/host/linux-x86]; then
+if [ -x out/host/linux-x86 ]; then
 	echo "Find out/host/linux-x86."
 else
 	echo "Cannot find out/host/linux-x86."
